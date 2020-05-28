@@ -34,38 +34,17 @@ class MyLinkedList {
      */
     public int get(int index) {
         /** 如果查询的索引小于等于0或者大于链表长度，返回-1 */
-//        if (index <= 0 || index > size) {
-//            return -1;
-//        } else {
-//            Node node = head;
-//            if (index == 1) {
-//                return node.val;
-//            } else {
-//                int i = 1;
-//                while (null != node.next) {
-//                    node = node.next;
-//                    index--;
-//                    if (index == 1) {
-//                        return node.val;
-//                    }
-//                }
-//            }
-//            return -1;
-//        }
-        if (index <= 0) {
+        if (index <= 0 || index > size) {
             return -1;
         } else {
-            Node tmp = head;
-            int i = 1;
-            while (tmp != null) {
-                if (i == index) {
-                    return tmp.val;
-                } else {
-                    i++;
-                    tmp = tmp.next;
-                }
+            if (head == null) {
+                return -1;
             }
-            return -1;
+            Node node = head;
+            for (int i = 0; node.next != null && i < index; i++) {
+                node = node.next;
+            }
+            return node.val;
         }
     }
 
@@ -107,20 +86,11 @@ class MyLinkedList {
         } else if (index > size) {
             return;
         } else {
-            Node p = new Node(val);
-            if (head == null) { //空链表
-                head = p;
-            } else {
-                //在链表中间添加新节点
-                Node q = head;
-                int i = 0;
-                while (q != null && i < index - 1) {//获取索引为index-1的节点tempNode
-                    q = q.next;
-                    i++;
-                }
-                p.next = q.next;
-                q.next = p;
+            Node tmp = head;
+            for (int i = 0; tmp.next != null && i < index; i++) {
+                tmp = tmp.next;
             }
+            tmp.next = new Node(val);
         }
     }
 
@@ -133,28 +103,6 @@ class MyLinkedList {
         } else if (index > size) {
             return;
         } else {
-            if (null == head) {
-                return;
-            }
-            /** 如果删除第一个，则删除头节点 */
-            if (index == 1) {
-                head = head.next;
-                size--;
-                return;
-            }
-            Node pre = head;
-            Node tmp = pre.next;
-            int i = 2;
-            while (tmp != null) {
-                if (i == index) {
-                    pre.next = tmp.next;
-                    size--;
-                } else {
-                    pre = pre.next;
-                    tmp = pre.next;
-                    i++;
-                }
-            }
         }
     }
 
@@ -165,13 +113,13 @@ class MyLinkedList {
         MyLinkedList myLinkedList = new MyLinkedList();
         myLinkedList.addAtHead(1);
         myLinkedList.addAtTail(3);
-        myLinkedList.addAtIndex(1, 2);
+//        myLinkedList.addAtIndex(1, 2);
         System.out.println(myLinkedList.get(1));
         System.out.println(myLinkedList.get(2));
-        System.out.println(myLinkedList.get(3));
-        System.out.println("one: " + myLinkedList.get(1));
-        myLinkedList.deleteAtIndex(1);
-        System.out.println("two: " + myLinkedList.get(1));
+//        System.out.println(myLinkedList.get(3));
+//        System.out.println("one: " + myLinkedList.get(1));
+//        myLinkedList.deleteAtIndex(1);
+//        System.out.println("two: " + myLinkedList.get(1));
 //        myLinkedList.addAtTail(1);
 //        myLinkedList.addAtTail(2);
 //        myLinkedList.addAtTail(3);

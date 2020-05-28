@@ -17,36 +17,44 @@ public class Array<E> {
 
     private E[] array;
 
-    private Array() {
+    public Array() {
         this.capacity = DEFAULT_CAPACITY;
         this.array = (E[]) new Object[DEFAULT_CAPACITY];
     }
 
-    private Array(int capacity) {
+    public Array(int capacity) {
         this.capacity = capacity;
         this.array = (E[]) new Object[capacity];
     }
 
-    private int getSize() {
+    public int getSize() {
         return this.size;
     }
 
-    private int getCapacity() {
+    public int getCapacity() {
         return this.capacity;
     }
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return 0 == this.size;
     }
 
-    private E get(int index) {
+    public E get(int index) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("error index");
         }
         return array[index];
     }
 
-    private void set(int index, E e) {
+    public E getFirst() {
+        return get(0);
+    }
+
+    public E getLast() {
+        return get(size - 1);
+    }
+
+    public void set(int index, E e) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("error index");
         }
@@ -58,7 +66,7 @@ public class Array<E> {
      * @param index
      * @param e
      */
-    private void add(int index, E e) {
+    public void add(int index, E e) {
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("error index");
         }
@@ -77,7 +85,7 @@ public class Array<E> {
      * 在数组头添加元素，时间复杂度O(1)
      * @param e
      */
-    private void addFirst(E e) {
+    public void addFirst(E e) {
         add(0, e);
     }
 
@@ -85,7 +93,7 @@ public class Array<E> {
      * 在末尾添加元素，时间复杂度O(n)
      * @param e
      */
-    private void addLast(E e) {
+    public void addLast(E e) {
         add(size, e);
     }
 
@@ -94,7 +102,7 @@ public class Array<E> {
      * @param index
      * @return
      */
-    private E remove(int index) {
+    public E remove(int index) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("error index");
         }
@@ -114,7 +122,7 @@ public class Array<E> {
      * 删除第一个元素
      * @return
      */
-    private E removeFirst() {
+    public E removeFirst() {
         return remove(0);
     }
 
@@ -122,7 +130,7 @@ public class Array<E> {
      * 删除最后一个元素
      * @return
      */
-    private E removeLast() {
+    public E removeLast() {
         return remove(size - 1);
     }
 
@@ -130,7 +138,7 @@ public class Array<E> {
      * 动态调整数组大小
      * @param capacity
      */
-    private void resize(int capacity) {
+    public void resize(int capacity) {
         E[] newData = (E[]) new Object[capacity];
         for (int i = 0; i < this.size; i++) {
             newData[i] = array[i];
@@ -139,7 +147,7 @@ public class Array<E> {
         this.capacity = capacity;
     }
 
-    private boolean contains(E e) {
+    public boolean contains(E e) {
         if (null == e) {
             return false;
         }
