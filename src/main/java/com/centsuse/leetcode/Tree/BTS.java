@@ -2,6 +2,8 @@ package com.centsuse.leetcode.Tree;
 
 import com.centsuse.leetcode.Queue.LoopQueue;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -192,6 +194,9 @@ public class BTS<E extends Comparable<E>> {
         inOrder(node.right);
     }
 
+    // TODO 中续遍历非递归写法
+
+
     /**
      * 后序遍历，先左节点，右节点，再本节点，左右中
      */
@@ -208,6 +213,8 @@ public class BTS<E extends Comparable<E>> {
         postOrder(node.right);
         System.out.println(node.e);
     }
+
+    // TODO 后续遍历非递归写法
 
     /**
      * 层序遍历（广度优先遍历）
@@ -232,7 +239,140 @@ public class BTS<E extends Comparable<E>> {
         }
     }
 
+    /**
+     * 获取最小节点的数据值
+     * @return
+     */
+    public Node getMinElement() {
+        if (null == root) {
+            return null;
+        }
+        return getMinElement(root);
+    }
+
+    private Node getMinElement(Node node) {
+        if (null == node.left) {
+            return node;
+        }
+        return getMinElement(node.left);
+    }
+
+    /**
+     * 获取最大节点的数据值
+     * @return
+     */
+    public Node getMaxElement() {
+        if (null == root) {
+            return null;
+        }
+        return getMaxElement(root);
+    }
+
+    private Node getMaxElement(Node node) {
+        if (null == node.right) {
+            return node;
+        }
+        return getMaxElement(node.right);
+    }
+
+    /**
+     * 移除bts中最小元素的节点，并返回该节点
+     * @return
+     */
+    public Node removeMinElement() {
+        if (null == root) {
+            return null;
+        }
+        Node node = getMinElement();
+        root = removeMinElement(root);
+        return node;
+    }
+
+    private Node removeMinElement(Node node) {
+        if (null == node.left) {
+            Node newNode = node.right;
+            node = null;
+            size--;
+            return newNode;
+        }
+        node.left = removeMinElement(node.left);
+        return node;
+    }
+
+    /**
+     * 移除bts中最大数据的元素，并返回删除的节点
+     * @return
+     */
+    public Node removeMaxElement() {
+        if (null == root) {
+            return null;
+        }
+        Node node = getMaxElement();
+        root = removeMaxElement(root);
+        return node;
+    }
+
+    private Node removeMaxElement(Node node) {
+        if (null == node.right) {
+            Node newNode = node.left;
+            node = null;
+            size--;
+            return newNode;
+        }
+        node.right = removeMaxElement(node.right);
+        return node;
+    }
+
+    /**
+     * 删除树中任一元素
+     * @return
+     */
+    public void removeElement(E e) {
+        if (null == root || null == e) {
+            throw new IllegalArgumentException("error root or e");
+        }
+        root = removeElement(root, e);
+    }
+
+    private Node removeElement(Node node, E e) {
+        if (null == node) {
+            return null;
+        }
+        if (e.compareTo(node.e) < 0) {
+            node.left = removeElement(node.left, e);
+            return node;
+        } else if (e.compareTo(node.e) > 0) {
+            node.right = removeElement(node.right, e);
+            return node;
+        } else {
+            // 如果节点的左子树为空，则把节点的右子树放到该位置
+            if (null == node.left) {
+                Node rightNode = node.right;
+                node = null;
+                size--;
+                return rightNode;
+            } else if (null == node.right) {
+                Node leftNode = node.left;
+                node = null;
+                size--;
+                return leftNode;
+            } else {
+                // 左右子树都不为null，从node的子树中找出比node大的最小的元素（后继）
+                Node successor = new Node(getMaxElement(node.right).e);
+                successor.left = node.left;
+                successor.right = removeMinElement(node.right); // 元素删除在该位置进行，size--
+                node.left = node.right = null;
+                return successor;
+            }
+
+        }
+    }
+
+
     public static void main(String[] args) {
+        Map<Integer, Integer> map = new HashMap<>();
+//        map.containsKey()
+        int[] a = new int[]{1, 2};
         BTS<Integer> bts = new BTS<>();
         bts.addNR(10);
         bts.addNR(12);
@@ -264,7 +404,42 @@ public class BTS<E extends Comparable<E>> {
         bts.addNR(5);
         bts.add(4);
         bts.leverOrder(); // 10, 1, 12, 2, 23, 5, 45, 4
+        System.out.println("-----------------------------");
+        System.out.println(bts.getMinElement().e); // 1
+        System.out.println(bts.getMaxElement().e); // 45
+        System.out.println(bts.removeMinElement().e); // 1
+        System.out.println("--");
+        bts.leverOrder();// 10 2 12 5 23 4 45
+        System.out.println("---");
+        System.out.println(bts.removeMaxElement().e); // 45
+        System.out.println("---");
+        bts.leverOrder(); // 10 2 12 5 23 4
+
+        System.out.println("=================");
+
+        BTS<Integer> integerBTS = new BTS<>();
+        integerBTS.addNR(10);
+        integerBTS.addNR(8);
+        integerBTS.addNR(15);
+        integerBTS.addNR(6);
+        integerBTS.addNR(9);
+        integerBTS.addNR(12);
+        integerBTS.addNR(17);
+//        integerBTS.preOrder(); // 10 8 6 9 15 12 17
+//        integerBTS.inOrder(); // 6 8 9 10 12 15 17
+//        integerBTS.postOrder(); // 6 9 8 12 17 15 10
+//        integerBTS.leverOrder(); // 10 8 15 6 9 12 17
+//        integerBTS.removeMaxElement();
+//        integerBTS.leverOrder(); // 10 8 15 6 9 12
+//        integerBTS.removeMinElement();
+//        integerBTS.leverOrder(); // 10 8 15 9 12
 //        System.out.println("inOrder:");
+//        integerBTS.removeElement(15);
+//        integerBTS.leverOrder(); // 10 8 17 6 9 12
+        integerBTS.removeElement(8);
+        integerBTS.leverOrder(); // 10 9 15 6 12 17
+        integerBTS.removeElement(17);
+        integerBTS.leverOrder(); // 10 9 15 6 12
 //        bts.inOrder(); //1, 10, 12, 23, 45
 //        bts.add(11);
 //        System.out.println("-----------------");

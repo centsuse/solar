@@ -7,6 +7,8 @@ package com.centsuse.leetcode.Stack;
  **/
 public interface StackInterface<E> {
 
+    int a = 10;
+
     void push(E e);
 
     E pop();

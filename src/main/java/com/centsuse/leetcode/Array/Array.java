@@ -1,7 +1,5 @@
 package com.centsuse.leetcode.Array;
 
-import java.util.Arrays;
-
 /**
  * @author centsuse
  * @DESCRIPTION ${DESCRIPTION}
@@ -10,6 +8,8 @@ import java.util.Arrays;
 public class Array<E> {
 
     private static final int DEFAULT_CAPACITY = 10;
+    
+    private String name;
 
     private int capacity;
 
@@ -17,12 +17,14 @@ public class Array<E> {
 
     private E[] array;
 
-    public Array() {
+    @SuppressWarnings("unchecked")
+	public Array() {
         this.capacity = DEFAULT_CAPACITY;
         this.array = (E[]) new Object[DEFAULT_CAPACITY];
     }
 
-    public Array(int capacity) {
+    @SuppressWarnings("unchecked")
+	public Array(int capacity) {
         this.capacity = capacity;
         this.array = (E[]) new Object[capacity];
     }
@@ -39,7 +41,15 @@ public class Array<E> {
         return 0 == this.size;
     }
 
-    public E get(int index) {
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public E get(int index) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("error index");
         }
@@ -195,7 +205,7 @@ public class Array<E> {
             private String name;
         }
 
-        Array array = new Array();
+        Array<Integer> array = new Array<Integer>();
         array.addFirst(4);
         array.addFirst(3);
         array.addFirst(2);
@@ -208,9 +218,13 @@ public class Array<E> {
         array.addLast(9);
         array.addLast(10);
         array.add(2, 21);
-        System.out.println(array);
-        System.out.println(array.find(7));
-        System.out.println(array.contains(7));
+        array.setName(null);
+//        System.out.println(array);
+//        System.out.println(array.find(7));
+//        System.out.println(array.contains(7));
+        System.out.println(array.getName());
+        System.out.println("null".equals(array.getName()));
+        System.out.println(null == array.getName());
 //        System.out.println(array.remove(2));
 //        System.out.println(array.removeFirst());
 //        System.out.println(array.removeLast());
@@ -228,7 +242,7 @@ public class Array<E> {
         for (int i = 0; i < 6; i++) {
             studentArray.addLast(new Student());
         }
-        System.out.println(studentArray);
+//        System.out.println(studentArray);
     }
 
 }
